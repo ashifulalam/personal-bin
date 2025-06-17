@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Define your workspace directory
+WORKSPACE="/Users/ashifulalam/Desktop/workSpace"
+
+PROJECT_NAME=$1
+
+# If no project name is provided as an argument, ask for it interactively
+if [ -z "$PROJECT_NAME" ]; then
+    echo "What would you like to name your new React project?"
+    read -p "React project > " PROJECT_NAME
+    
+    # Validate that project name is not empty
+    while [ -z "$PROJECT_NAME" ]; do
+        echo "Project name cannot be empty. Please enter a valid name for your React project:"
+        read -p "React project > " PROJECT_NAME
+    done
+fi
+
+# Make sure workspace directory exists
+if [ ! -d "$WORKSPACE" ]; then
+    echo "Creating workspace directory at $WORKSPACE..."
+    mkdir -p "$WORKSPACE"
+fi
+
+# Change to the workspace directory
+cd "$WORKSPACE"
+
+# Clone the boilerplate repository
+echo "Cloning React boilerplate to $WORKSPACE/$PROJECT_NAME..."
+git clone git@github.com:ashifulalam/react-boilerplate.git "$PROJECT_NAME"
+
+# Change to the project directory
+cd "$PROJECT_NAME"
+
+# Remove the existing git repository
+echo "Removing original git history..."
+rm -rf .git
+
+# Initialize a new git repository
+echo "Initializing fresh git repository..."
+git init
+
+# Install dependencies
+echo "Installing npm dependencies..."
+npm install
+
+# Create initial commit
+echo "Creating initial git commit..."
+git add .
+git commit -m "Initial commit"
+
+echo "Done! Your new React project '$PROJECT_NAME' is ready at $WORKSPACE/$PROJECT_NAME."
+echo "cd $WORKSPACE/$PROJECT_NAME to get started."
