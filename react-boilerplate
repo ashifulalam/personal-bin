@@ -1,19 +1,32 @@
 #!/bin/bash
 
 # Define your workspace directory
-WORKSPACE="/Users/ashifulalam/Desktop/workSpace"
+WORKSPACE="/Users/ashifulalam/Documents/workSpace"
 
 PROJECT_NAME=$1
+TITLE_NAME=$2  # New argument for the title name
 
 # If no project name is provided as an argument, ask for it interactively
 if [ -z "$PROJECT_NAME" ]; then
     echo "What would you like to name your new React project?"
-    read -p "React project > " PROJECT_NAME
+    read -p "React project name > " PROJECT_NAME
     
     # Validate that project name is not empty
     while [ -z "$PROJECT_NAME" ]; do
         echo "Project name cannot be empty. Please enter a valid name for your React project:"
-        read -p "React project > " PROJECT_NAME
+        read -p "React project name > " PROJECT_NAME
+    done
+fi
+
+# If no title is provided, ask for it interactively
+if [ -z "$TITLE_NAME" ]; then
+    echo "What would you like the website title to be?"
+    read -p "Website title > " TITLE_NAME
+
+    # Validate that title is not empty
+    while [ -z "$TITLE_NAME" ]; do
+        echo "Title cannot be empty. Please enter a valid title for your website:"
+        read -p "Website title > " TITLE_NAME
     done
 fi
 
@@ -26,7 +39,7 @@ fi
 # Change to the workspace directory
 cd "$WORKSPACE"
 
-# Clone the boilerplate repository
+# Clone the React boilerplate repository
 echo "Cloning React boilerplate to $WORKSPACE/$PROJECT_NAME..."
 git clone git@github.com:ashifulalam/react-boilerplate.git "$PROJECT_NAME"
 
@@ -37,18 +50,34 @@ cd "$PROJECT_NAME"
 echo "Removing original git history..."
 rm -rf .git
 
-# Initialize a new git repository
-echo "Initializing fresh git repository..."
-git init
+# Clear the contents of README.md file
+echo "Clearing contents of README.md file..."
+> README.md
 
 # Install dependencies
 echo "Installing npm dependencies..."
 npm install
 
+# Initialize a new git repository
+echo "Initializing fresh git repository..."
+git init
+
+# Update the title in index.html (public/index.html)
+echo "Updating website title in public/index.html..."
+sed -i '' "s/<title>Change This<\/title>/<title>$TITLE_NAME<\/title>/g" public/index.html
+
 # Create initial commit
 echo "Creating initial git commit..."
 git add .
-git commit -m "Initial commit"
+git commit -m "initial commit"
+
+# Use the current iTerm2 window and cd into the project directory
+echo "Changing directory in the current iTerm2 window to the project folder..."
+osascript -e "tell application \"iTerm\" to tell current session of current window to write text \"cd $WORKSPACE/$PROJECT_NAME\""
+
+# Open project in VS Code
+echo "Opening project folder in VS Code..."
+code "$WORKSPACE/$PROJECT_NAME"
 
 echo "Done! Your new React project '$PROJECT_NAME' is ready at $WORKSPACE/$PROJECT_NAME."
 echo "cd $WORKSPACE/$PROJECT_NAME to get started."
