@@ -35,20 +35,9 @@ source ~/.zshrc
 Create a new script file in your bin directory:
 
 ```bash
-touch ~/bin/my-script
+mate ~/bin/my-script
 ```
 
-You can use any text editor to edit the script. For example:
-
-```bash
-nano ~/bin/my-script
-```
-
-Or with VS Code:
-
-```bash
-code ~/bin/my-script
-```
 
 Basic script template:
 
@@ -78,10 +67,4 @@ my-script
 ```
 
 
-## Common Issues
 
-If your script doesn't run:
-- Check if it's executable (`ls -la ~/bin/my-script`)
-- Verify ~/bin is in your PATH (`echo $PATH`)
-- Ensure your script starts with a proper shebang line (`#!/bin/bash`)
-- Check for syntax errors in your script
